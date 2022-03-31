@@ -1,6 +1,20 @@
 from pyvis.network import Network
+import math
 
 net = Network()
+
+class node():
+    index = None
+    label = None
+    dist = math.inf
+    heuristic = 0
+    total = math.inf
+    prev = None
+    def __init__(self, label):
+        self.label = label
+    
+    def __str__(self):
+        return f"<node {self.label} i: {self.index} dist: {self.dist} prev: {self.prev}>"
 
 graph = {
     "A": {"B": 4, "D": 5, "C": 6},
@@ -12,8 +26,41 @@ graph = {
 nodes = graph.keys()
 net.add_nodes(nodes)
 
-for node, edges in graph.items():
+for n, edges in graph.items():
     for end, weight in edges.items():
-        net.add_edge(node, end, weight=weight)
+        net.add_edge(n, end, weight=weight)
 
-net.show("graph.html")
+#net.show("graph.html")
+
+start = "A"
+end = "D"
+
+cnode = start
+data = {}
+
+for n in graph.keys():
+    #index, from start, heuristic, prev node
+    data[n] = node(n)
+
+i = 1
+while True:
+    if data[cnode].prev:
+        data[cnode].index = i
+    else:
+        #this must be the first node
+        data[cnode].dist = 0
+    for n, dist in graph[cnode].items():
+        if data[n].index:
+            continue
+        if data[n].dist > data[cnode].dist + dist:
+            data[n].dist = data[cnode].dist + dist
+            data[n].total = data[n].dist + data[n].heuristic
+            data[n].prev = cnode
+    i += 1
+    cnode = "D"
+    #need to sort the items in data which do not have and index by the total dist and then chose the closest
+    if cnode == end:
+        break
+
+[print(f"{n}: {o}") for n, o in data.items()]
+        
