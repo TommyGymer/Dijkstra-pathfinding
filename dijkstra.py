@@ -14,13 +14,13 @@ class node():
         self.label = label
     
     def __str__(self):
-        return f"<node {self.label} i: {self.index} dist: {self.dist} prev: {self.prev}>"
+        return f"<node {self.label} i: {self.index} dist: {self.dist} heuristic: {self.heuristic} total: {self.total} prev: {self.prev}>"
 
 graph = {
-    "A": {"B": 4, "D": 5, "C": 6},
+    "A": {"B": 4, "C": 6},
     "B": {"A": 4, "C": 3},
     "C": {"B": 3, "D": 1, "A": 6},
-    "D": {"A": 5, "C": 1}
+    "D": {"C": 1}
 }
 
 nodes = graph.keys()
@@ -44,11 +44,11 @@ for n in graph.keys():
 
 i = 1
 while True:
-    if data[cnode].prev:
-        data[cnode].index = i
-    else:
+    if not data[cnode].prev:
         #this must be the first node
         data[cnode].dist = 0
+        data[cnode].total = 0
+    data[cnode].index = i
     for n, dist in graph[cnode].items():
         if data[n].index:
             continue
@@ -57,10 +57,25 @@ while True:
             data[n].total = data[n].dist + data[n].heuristic
             data[n].prev = cnode
     i += 1
-    cnode = "D"
+    cnodes = [(node, obj) for node, obj in data.items() if not obj.index]
+    cnodes.sort(key=lambda x: x[1].total)
+    cnode = cnodes[0][0]
     #need to sort the items in data which do not have and index by the total dist and then chose the closest
     if cnode == end:
         break
 
-[print(f"{n}: {o}") for n, o in data.items()]
-        
+#[print(f"{n}: {o}") for n, o in data.items()]
+
+route = [cnode]
+total_dist = data[cnode].total
+
+while True:
+    cnode = data[cnode].prev
+    route.append(cnode)
+    if cnode == start:
+        break
+
+route.reverse()
+
+print(route)
+print(total_dist)
