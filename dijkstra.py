@@ -16,11 +16,24 @@ class node():
     def __str__(self):
         return f"<node {self.label} i: {self.index} dist: {self.dist} heuristic: {self.heuristic} total: {self.total} prev: {self.prev}>"
 
+# graph = {
+#     "A": {"B": 4, "C": 6},
+#     "B": {"A": 4, "C": 3},
+#     "C": {"B": 3, "D": 1, "A": 6},
+#     "D": {"C": 1}
+# }
+
 graph = {
-    "A": {"B": 4, "C": 6},
-    "B": {"A": 4, "C": 3},
-    "C": {"B": 3, "D": 1, "A": 6},
-    "D": {"C": 1}
+    "A": {"B": 3, "D": 25, "I": 12},
+    "B": {"A": 3, "C": 5},
+    "C": {"B": 5, "D": 14, "E": 6},
+    "D": {"A": 25, "C": 14, "E": 7},
+    "E": {"C": 6, "D": 7, "F": 8, "G": 16},
+    "F": {"I": 7, "E": 8, "G": 9},
+    "G": {"E": 16, "F": 9, "H": 11},
+    "H": {"J": 23, "G": 11},
+    "I": {"A": 12, "J": 10, "F": 7},
+    "J": {"I": 10, "H": 23},
 }
 
 nodes = graph.keys()
