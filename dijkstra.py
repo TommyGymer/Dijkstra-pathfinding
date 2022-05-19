@@ -1,5 +1,6 @@
 from pyvis.network import Network
 import math
+import time
 
 net = Network()
 
@@ -44,6 +45,9 @@ for n, edges in graph.items():
         net.add_edge(n, end, weight=weight)
 
 #net.show("graph.html")
+
+print("starting pathfinding")
+start_t = time.time()
 
 start = "A"
 end = "H"
@@ -92,3 +96,7 @@ route.reverse()
 
 print(route)
 print(total_dist)
+
+end_t = time.time()
+
+print(f"finished pathfinding in {(end_t - start_t) * 1000}ms")
